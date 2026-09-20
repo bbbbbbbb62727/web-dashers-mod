@@ -2585,7 +2585,7 @@ this._menuUpdateLogBtn = this.add.image(screenWidth - 30 - 50, 33, "GJ_WebSheet"
           ? ("Song #" + levelData.customSongID)
           : (window.allLevels && window.allLevels[levelData.officialSong] ? window.allLevels[levelData.officialSong][1] : "Unknown");
         try {
-          const infoRes = await fetch(`https://gdbrowser.com/api/level/${levelData.id}`);
+          const infoRes = await fetch(`https://corsproxy.io/?url=${encodeURIComponent(`https://gdbrowser.com/api/level/${levelData.id}`)}`);
           if (infoRes.ok) {
             const infoData = await infoRes.json();
             if (infoData) {
@@ -10943,7 +10943,7 @@ window.open("https://github.com/web-dashers/web-dashers.github.io", "_blank"); }
         const _officialEntries = _lastLevelData.filter(ld => !ld.customSongID && ld.id);
         if (_officialEntries.length > 0) {
           await Promise.all(_officialEntries.map(ld => {
-            return fetch(`https://gdbrowser.com/api/level/${ld.id}`)
+            return fetch(`https://corsproxy.io/?url=${encodeURIComponent(`https://gdbrowser.com/api/level/${ld.id}`)}`)
               .then(r => r.ok ? r.json() : null)
               .then(data => { if (data && data.songName) ld.songName = data.songName; })
               .catch(() => {});
@@ -11523,7 +11523,7 @@ window.open("https://github.com/web-dashers/web-dashers.github.io", "_blank"); }
       } else {
         Promise.all(_needsFetch.map(levelData => {
           const numericId = String(levelData.id || "").replace(/^online_/, "");
-          return fetch(`https://gdbrowser.com/api/level/${numericId}`)
+          return fetch(`https://corsproxy.io/?url=${encodeURIComponent(`https://gdbrowser.com/api/level/${numericId}`)}`)
             .then(r => r.ok ? r.json() : null)
             .then(data => {
               if (data) {
