@@ -3405,15 +3405,11 @@ window.LevelObject = class LevelObject {
     if (!this._sections[nextSection].includes(sprite)) this._sections[nextSection].push(sprite);
     sprite._eeSectionIndex = nextSection;
 const layer = sprite._eelayer !== undefined ? sprite._eelayer : 1;
-const frameName = (sprite.frame ? String(sprite.frame.name) : "").toLowerCase();
-const texKey = (sprite.texture ? String(sprite.texture.key) : "").toLowerCase();
-const objName = texKey + " " + frameName;
 
-// Real GD decoration naming convention: frames starting with "d_"
-const isDecoration = frameName.startsWith("d_") && !Number.isInteger(sprite._eeCollisionSectionIndex);
-
-if (isDecoration) {
-  sprite.setBlendMode(1); // Additive — makes black backgrounds transparent
+// Hide ALL non-gameplay decoration entirely - keep only real collidable objects
+if (!Number.isInteger(sprite._eeCollisionSectionIndex) && layer !== 2) {
+  sprite.setVisible(false);
+  return;
 }
 
 if (layer === 2) {
@@ -3422,8 +3418,7 @@ if (layer === 2) {
 }
 
 const sectionContainer = this._ensureSectionContainer(nextSection);
-const targetContainer = (layer === 0 || isDecoration) ? sectionContainer.additive : sectionContainer.normal;
-if (sprite.parentContainer === targetContainer) return;
+const targetContainer = layer === 0 ? sectionContainer.additive : sectionContainer.normal;if (sprite.parentContainer === targetContainer) return;
 if (layer !== 0 && sprite._eeBehindParent) targetContainer.addAt(sprite, 0);
 else targetContainer.add(sprite);
 return;
