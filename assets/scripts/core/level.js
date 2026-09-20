@@ -1,4 +1,4 @@
-console.log("LEVEL FILE VERSION: TEST123");
+console.log("DECO HIDE V2 ACTIVE");
 class Collider {
   constructor(objType, xPos, yPos, width, height, rotation = 0) {
     this.type = objType;
